@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block body %}
+
+<div dir="rtl">
+<div class="container">
+    <div class="signup">
+        <div class="col-md-9" >
+            <form method="POST">
+                <h4 class="auth-header">تسجيل الدخول</h4>
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button type="submit" class="btn btn-primary" > تسحيل الدخول</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock body %}
