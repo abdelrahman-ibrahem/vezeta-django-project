@@ -31,3 +31,5 @@ class UpdateProfile(forms.ModelForm):
         model = Profile
         fields = '__all__'
         exclude = ['user' , 'slug' , 'created_at']
+
+

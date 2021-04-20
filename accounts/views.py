@@ -4,15 +4,22 @@ from .models import Profile
 from .forms import LoginForm , Register , UpdateProfile
 from django.urls import reverse
 from django.contrib.auth import authenticate , login , logout
+from .filter import Filter
 # Create your views here.
 
+
+# fucntion  home page 
 def index(request):
     index = Profile.objects.all()
+    # filter 
+    myFliter = Filter(request.GET , queryset=index)
+    index = myFliter.qs
     return render(request , 'accounts/index.html' , {
-        'doctor':index
+        'doctor':index , 'filter':myFliter
     })
 
 
+# function login page
 def signin(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -29,7 +36,7 @@ def signin(request):
         "form":form
     })
 
-
+# function to register in this website 
 def signup(request):
     if request.method == 'POST':
         form2 = Register(request.POST)
@@ -48,6 +55,7 @@ def signup(request):
     })
 
 
+# function to display doctor information
 def doctor_details(request , slug):
     doctors =  Profile.objects.get(slug=slug)
     return render(request , 'accounts/doctors_detail.html' , {
@@ -55,7 +63,7 @@ def doctor_details(request , slug):
     })
 
 
-
+# function to display your profile
 def profile_page(request):
     return render(request , 'accounts/profile.html' , {
 
@@ -63,7 +71,7 @@ def profile_page(request):
 
 
 
-
+#function to update profile page
 def update_profile_page(request):
     if request.method == 'POST':
         update = UpdateProfile(request.POST , request.FILES , instance=request.user )
@@ -76,7 +84,7 @@ def update_profile_page(request):
     })
 
 
-
+# function to logout from this page 
 def logout_page(request):
     logout(request)
     return HttpResponseRedirect(reverse('accounts:index'))
