@@ -7,5 +7,6 @@ urlpatterns = [
     path('register/' , views.signup , name="register" ),
     path('my_profile' , views.profile_page , name="profile"),
     path('logout/' , views.logout_page , name="logout"),
+    path('update/' , views.update_profile_page , name="update"),
     path('doctor_details/<str:slug>/' , views.doctor_details , name="doctor_details"),
 ]

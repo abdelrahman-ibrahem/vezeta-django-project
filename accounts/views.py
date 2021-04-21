@@ -80,8 +80,10 @@ def profile_page(request):
 def update_profile_page(request):
     if request.method == 'POST':
         update = UpdateProfile(request.POST , request.FILES , instance=request.user )
-        if update.is_valid():
+        if update.is_valid() :
             update.save()
+            return HttpResponseRedirect(reverse('accounts:profile'))
+
     else:
         update = UpdateProfile()
     return render(request , 'accounts/updata_profile.html' , {
