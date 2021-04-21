@@ -14,7 +14,7 @@ class LoginForm(forms.ModelForm):
 
 
 
-class Register(UserCreationForm):
+class RegisterForm(UserCreationForm):
     username = forms.CharField(label="الاسم")
     email = forms.EmailField(label="الايميل")
     password1 = forms.CharField(label= "كلمه المرور", widget=forms.PasswordInput)    

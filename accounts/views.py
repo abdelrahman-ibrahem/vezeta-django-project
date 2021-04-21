@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse , HttpResponseRedirect
 from .models import Profile
-from .forms import LoginForm , Register , UpdateProfile
+from .forms import LoginForm , RegisterForm , UpdateProfile
 from django.urls import reverse
 from django.contrib.auth import authenticate , login , logout
 from .filter import Filter
+from django.core.paginator import Paginator
 # Create your views here.
 
 
@@ -14,8 +15,11 @@ def index(request):
     # filter 
     myFliter = Filter(request.GET , queryset=index)
     index = myFliter.qs
+    paginator = Paginator(index , 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request , 'accounts/index.html' , {
-        'doctor':index , 'filter':myFliter
+        'doctor':page_obj , 'filter':myFliter
     })
 
 
@@ -39,17 +43,18 @@ def signin(request):
 # function to register in this website 
 def signup(request):
     if request.method == 'POST':
-        form2 = Register(request.POST)
+        form2 = RegisterForm(request.POST)
         if form2.is_valid():
             form2.save()
-            username = form2.cleaned_data['username']
-            password = form2.cleaned_data['password1']
-            user = authenticate(username=username , password=password)
-            if user is not None:
-                login(request , user)
-                return HttpResponseRedirect(reverse('accounts:index'))
+            return HttpResponseRedirect(reverse('accounts:login'))
+            # username = form2.cleaned_data['username']
+            # password = form2.cleaned_data['password1']
+            # user = authenticate(username=username , password=password)
+            # if user is not None:
+            #     login(request , user)
+            #     return HttpResponseRedirect(reverse('accounts:index'))
     else:
-        form2 = Register()
+        form2 = RegisterForm()
     return render(request , 'accounts/signup.html' , {
         'forms':form2
     })
